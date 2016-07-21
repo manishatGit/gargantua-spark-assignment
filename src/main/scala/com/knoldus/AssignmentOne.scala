@@ -14,8 +14,9 @@ object AssignmentOne extends App {
   println("Total records in the file::: "+totalRecords)
   val englishPageCounts = rdd.filter( line => line.split(" ").apply(0).contains("en")) //Q4
   println("Total records with english pages::: "+englishPageCounts.count()) //Q5
-  val pageWiseRequestCount = rdd.map(line => (line.split(" ").apply(0),line.split(" ").apply(2).toInt)).reduceByKey((a,b)=> a+b)
-  val pagesWithRequestMoreThanTwoHundredThousands = pageWiseRequestCount.filter(_._2>200000).count()//Q6
-  println("Total pages which were requested more than 200000::"+pagesWithRequestMoreThanTwoHundredThousands)
+  val pageWiseRequestCount = rdd.map(line => (line.split(" ").apply(1),line.split(" ").apply(2).toInt)).reduceByKey((a,b)=> a+b)
+  val pagesWithRequestMoreThanTwoHundredThousands = pageWiseRequestCount.filter(_._2>200000).collect
+  println("------------------------pages that were requested more than 200000 times ----------------- ")
+  pagesWithRequestMoreThanTwoHundredThousands.foreach(println)
   sc.stop()
 }
